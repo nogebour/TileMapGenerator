@@ -1,5 +1,7 @@
 package MapGenerator.MapGenerator;
 
+import java.util.HashMap;
+
 /**
  * Hello world!
  *
@@ -8,7 +10,13 @@ public class App
 {
     public static void main( String[] args )
     {
-        Generator aGen = new GeneratorClassic();
+    	HashMap<TileType,String> theStrings = new HashMap<TileType, String>();
+    	theStrings.put(TileType.FIELD,"1"); 		// 0
+    	theStrings.put(TileType.DESERT,"O"); 	// 1
+    	theStrings.put(TileType.MOUNTAIN,"M");	// 2
+		theStrings.put(TileType.WATER,"_");		// 3
+		theStrings.put(TileType.CITY,"Z");
+        Generator aGen = new GeneratorClassic(50,50);
         aGen.execute();
         Map theMap = aGen.getTheMap();
         int[][] theMapInt = theMap.getMapInt();
@@ -18,7 +26,7 @@ public class App
         String theSMap = "";
         for(int i = 0; i < theMapInt.length; ++i){
         	for(int j = 0; j < theMapInt[i].length; ++j){
-        		theSMap += theMapInt[i][j]+" ";
+        		theSMap += theStrings.get(theMap.getMap()[i][j])+" ";
         		statMap[theMapInt[i][j]] += 1;
         		nbTiles ++;
         	}

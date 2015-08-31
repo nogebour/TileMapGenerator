@@ -41,7 +41,7 @@ public abstract class Generator {
 		return theMap;
 	}
 
-	protected int generateCase(TileType[] theTypes) {
+	protected static int generateCase(TileType[] theTypes) {
 		int resultTile = randInt(0, theTypes.length-1);
 		while (TileType.excludedType(theTypes[resultTile])){
 			resultTile = randInt(0, theTypes.length-1);
@@ -65,7 +65,7 @@ public abstract class Generator {
 		this.theMap = theMap;
 	}
 
-	public int randInt(int min, int max) {
+	public static int randInt(int min, int max) {
 
 	    // NOTE: Usually this should be a field rather than a method
 	    // variable so that it is not re-seeded every call.

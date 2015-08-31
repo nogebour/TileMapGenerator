@@ -4,10 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Constraint {
-	private List<TileType> theTypeConcerned;
+	protected List<TileType> theTypeConcerned;
+	protected boolean continueUntilOk;
+	protected boolean isBycase;
 	
 	public Constraint(){
 		theTypeConcerned = new ArrayList<TileType>();
+		continueUntilOk = false;
+		isBycase = true;
 	}
 	
 	public boolean isConcerned(TileType theType){
@@ -15,12 +19,19 @@ public abstract class Constraint {
 	}
 	
 	public boolean continueUntilOk(){
-		return false;
+		return continueUntilOk;
 	}
+	
+	public boolean isByCase(){
+		return isBycase;
+	}
+
 	
 	public void addType(TileType aType){
 		theTypeConcerned.add(aType);
 	}
 	
 	public abstract boolean respectConstraints(Map theMap, int width, int height);
+
+	public abstract void tryResolveConstraint(Map theMap, int i, int j);
 }

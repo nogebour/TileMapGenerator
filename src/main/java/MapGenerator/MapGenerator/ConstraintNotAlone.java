@@ -4,11 +4,8 @@ public class ConstraintNotAlone extends Constraint {
 	
 	public ConstraintNotAlone() {
 		super();
-	}
-	
-	public boolean continueUntilOk() {
-		return true;
-	}
+		continueUntilOk = true;
+	}	
 
 	@Override
 	public boolean respectConstraints(Map theMap, int width, int height) {
@@ -36,6 +33,14 @@ public class ConstraintNotAlone extends Constraint {
 		}
 		System.out.println("Is not concerned");
 		return true;
+	}
+
+	@Override
+	public void tryResolveConstraint(Map theMap, int i, int j) {
+		int resultTile = Generator.generateCase(TileType.values());
+		System.out.println("Replace case ("+i+","+j+") with type : "+theMap.getMap()[i][j]+" by type "+TileType.values()[resultTile]+".");
+		theMap.getMap()[i][j]=TileType.values()[resultTile];
+		theMap.getMapInt()[i][j]=resultTile;
 	}
 
 }

@@ -14,6 +14,9 @@ public class GeneratorClassic extends Generator {
 		theConst = new ConstraintNotTooMuch(0.20);
 		theConst.addType(TileType.WATER);
 		this.theConstraintList.add(theConst);
+		theConst = new ConstraintNotTooMuch(0.25);
+		theConst.addType(TileType.MOUNTAIN);
+		this.theConstraintList.add(theConst);
 	}
 
 	public GeneratorClassic (){
@@ -36,25 +39,34 @@ public class GeneratorClassic extends Generator {
 		int[][] aMapInt = theMap.getMapInt();
 		boolean status = true;
 		do{
+			status = true;
+			Iterator<Constraint> iterator = this.theConstraintList.iterator();
+			while (iterator.hasNext()) {
+				Constraint aConstraint = iterator.next();
+				if(aConstraint.isByCase()){
+					if(!aConstraint.respectConstraints(theMap, 0, 0)){
+						status = false;
+						aConstraint.tryResolveConstraint(theMap,0,0);
+						while(aConstraint.continueUntilOk() && !aConstraint.respectConstraints(theMap, 0, 0)){
+							aConstraint.tryResolveConstraint(theMap,0,0);
+						}
+					}
+				}
+			}
 			for(int i = 0; i < aMap.length; ++i){
 				System.out.println("Start height");
 				for(int j = 0; j < aMap[i].length; ++j){
 					System.out.println("Start width");
-					Iterator<Constraint> iterator = this.theConstraintList.iterator();
+					iterator = this.theConstraintList.iterator();
 					while (iterator.hasNext()) {
 						System.out.println("Start Constraint");
 						Constraint aConstraint = iterator.next();        			
 						if (aConstraint.isConcerned(aMap[i][j])){
 							if(!aConstraint.respectConstraints(theMap, j, i)){
-								int resultTile = generateCase(theTypes);
-								System.out.println("Replace case ("+i+","+j+") with type : "+aMap[i][j]+" by type "+theTypes[resultTile]+".");
-								aMap[i][j]=theTypes[resultTile];
-								aMapInt[i][j]=resultTile;
+								status = false;
+								aConstraint.tryResolveConstraint(theMap, i, j);
 								while(aConstraint.continueUntilOk() && !aConstraint.respectConstraints(theMap, j, i)){
-									resultTile = generateCase(theTypes);
-									System.out.println("Replace case ("+i+","+j+") with type : "+aMap[i][j]+" by type "+theTypes[resultTile]+".");
-									aMap[i][j]=theTypes[resultTile];
-									aMapInt[i][j]=resultTile;                    			
+									aConstraint.tryResolveConstraint(theMap, i, j);                  			
 								}
 							}
 						}        			
