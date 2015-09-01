@@ -37,7 +37,6 @@ public class ConstraintNotTooMuch extends Constraint {
 					for(int j = 0; j < theMap.getMap()[i].length; ++j){
 						if(theMap.getMap()[i][j] == aType && isAlone(theMap, j, i, aType)){
 							int resultTile = Generator.generateCase(TileType.values());
-							System.out.println("Replace case ("+i+","+j+") with type : "+theMap.getMap()[i][j]+" by type "+TileType.values()[resultTile]+".");
 							theMap.getMap()[i][j]=TileType.values()[resultTile];
 							theMap.getMapInt()[i][j]=resultTile;
 						}
@@ -48,4 +47,10 @@ public class ConstraintNotTooMuch extends Constraint {
 
 	}
 
+	@Override
+	public String toString() {
+		return "CONSTRAINT NOT TOO MUCH";
+	}	
+
+	
 }

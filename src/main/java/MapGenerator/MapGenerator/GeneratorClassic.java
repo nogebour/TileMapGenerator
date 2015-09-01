@@ -17,6 +17,9 @@ public class GeneratorClassic extends Generator {
 		theConst = new ConstraintNotTooMuch(0.25);
 		theConst.addType(TileType.MOUNTAIN);
 		this.theConstraintList.add(theConst);
+		theConst = new ConstraintConditionalType(TileType.HIGH_MOUNTAIN, 2);
+		theConst.addType(TileType.MOUNTAIN);
+		this.theConstraintList.add(theConst);
 	}
 
 	public GeneratorClassic (){
@@ -29,39 +32,46 @@ public class GeneratorClassic extends Generator {
 		theConst = new ConstraintNotTooMuch(0.20);
 		theConst.addType(TileType.WATER);
 		this.theConstraintList.add(theConst);
+		theConst = new ConstraintNotTooMuch(0.25);
+		theConst.addType(TileType.MOUNTAIN);
+		this.theConstraintList.add(theConst);
+		theConst = new ConstraintConditionalType(TileType.HIGH_MOUNTAIN, 2);
+		theConst.addType(TileType.MOUNTAIN);
+		this.theConstraintList.add(theConst);
 	}
 
 	@Override
 	protected void assertConstraint() {
-		System.out.println("Start Assert");
 		TileType[] theTypes = TileType.values();
 		TileType[][] aMap = theMap.getMap();
 		int[][] aMapInt = theMap.getMapInt();
 		boolean status = true;
+		int itcounter = 0;
 		do{
+			itcounter++;
+			System.out.println("Iteration #"+itcounter);
 			status = true;
 			Iterator<Constraint> iterator = this.theConstraintList.iterator();
 			while (iterator.hasNext()) {
 				Constraint aConstraint = iterator.next();
-				if(aConstraint.isByCase()){
-					if(!aConstraint.respectConstraints(theMap, 0, 0)){
-						status = false;
-						aConstraint.tryResolveConstraint(theMap,0,0);
-						while(aConstraint.continueUntilOk() && !aConstraint.respectConstraints(theMap, 0, 0)){
+				if(!aConstraint.isEndGeneration()){
+					if(!aConstraint.isByCase()){
+						if(!aConstraint.respectConstraints(theMap, 0, 0)){
+							status = false;
 							aConstraint.tryResolveConstraint(theMap,0,0);
+							while(aConstraint.continueUntilOk() && !aConstraint.respectConstraints(theMap, 0, 0)){
+								aConstraint.tryResolveConstraint(theMap,0,0);
+							}
 						}
 					}
 				}
 			}
 			for(int i = 0; i < aMap.length; ++i){
-				System.out.println("Start height");
 				for(int j = 0; j < aMap[i].length; ++j){
-					System.out.println("Start width");
 					iterator = this.theConstraintList.iterator();
 					while (iterator.hasNext()) {
-						System.out.println("Start Constraint");
 						Constraint aConstraint = iterator.next();        			
-						if (aConstraint.isConcerned(aMap[i][j])){
+						if (aConstraint.isByCase() && !aConstraint.isEndGeneration()){
 							if(!aConstraint.respectConstraints(theMap, j, i)){
 								status = false;
 								aConstraint.tryResolveConstraint(theMap, i, j);
@@ -74,6 +84,20 @@ public class GeneratorClassic extends Generator {
 				}
 			}
 		}while(!status);
-		System.out.println("End Assert");
+		Iterator<Constraint> iterator = this.theConstraintList.iterator();
+		while (iterator.hasNext()) {
+			Constraint aConstraint = iterator.next();
+			if(aConstraint.isEndGeneration()){
+				if(aConstraint.isByCase()){
+					for(int i = 0; i < aMap.length; ++i){
+						for(int j = 0; j < aMap[i].length; ++j){
+							aConstraint.tryResolveConstraint(theMap, i, j);
+						}
+					}
+				}else{
+					aConstraint.tryResolveConstraint(theMap, 0, 0);
+				}
+			}
+		}				
 	}
 }

@@ -44,6 +44,24 @@ public class Map {
 		this.mapInt = new int[width][height];
 	}
 	
+	public String printMap(){
+		HashMap<TileType,String> theStrings = new HashMap<TileType, String>();
+    	theStrings.put(TileType.FIELD,"1"); 		// 0
+    	theStrings.put(TileType.DESERT,"O"); 	// 1
+    	theStrings.put(TileType.MOUNTAIN,"M");	// 2
+		theStrings.put(TileType.WATER,"_");		// 3
+		theStrings.put(TileType.CITY,"Z");
+		theStrings.put(TileType.HIGH_MOUNTAIN,"H");
+		String theSMap ="";
+		for(int i = 0; i < mapInt.length; ++i){
+        	for(int j = 0; j < mapInt[i].length; ++j){
+        		theSMap += theStrings.get(map[i][j])+" ";
+        	}
+        	theSMap += "\n";
+        }
+		return theSMap;
+	}
+	
 	public HashMap<TileType, Double> getStats(){
 		HashMap<TileType, Double> theResult = new HashMap<TileType, Double>();
 		for (int i =0; i<TileType.values().length; i++){

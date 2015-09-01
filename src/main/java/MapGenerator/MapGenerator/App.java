@@ -16,7 +16,8 @@ public class App
     	theStrings.put(TileType.MOUNTAIN,"M");	// 2
 		theStrings.put(TileType.WATER,"_");		// 3
 		theStrings.put(TileType.CITY,"Z");
-        Generator aGen = new GeneratorClassic(50,50);
+		theStrings.put(TileType.HIGH_MOUNTAIN,"H");
+        Generator aGen = new GeneratorClassic(20,20);
         aGen.execute();
         Map theMap = aGen.getTheMap();
         int[][] theMapInt = theMap.getMapInt();
@@ -33,15 +34,15 @@ public class App
         	theSMap += "\n";
         }
         System.out.println(theSMap);
-        System.out.println(theMap.getType(1, 1));
-        System.out.println(theMap.getNorthType(1, 1));
-        System.out.println(theMap.getSouthType(1, 1));
-        System.out.println(theMap.getEastType(1, 1));
-        System.out.println(theMap.getWestType(1, 1));
-        System.out.println(theMap.getNorthEastType(1, 1));
-        System.out.println(theMap.getSouthEastType(1, 1));
-        System.out.println(theMap.getNorthWestType(1, 1));
-        System.out.println(theMap.getSouthWestType(1, 1));
+        System.out.println(theMap.getType(1, 2));
+        System.out.println(theMap.getNorthType(1, 2));
+        System.out.println(theMap.getSouthType(1, 2));
+        System.out.println(theMap.getEastType(1, 2));
+        System.out.println(theMap.getWestType(1, 2));
+        System.out.println(theMap.getNorthEastType(1, 2));
+        System.out.println(theMap.getSouthEastType(1, 2));
+        System.out.println(theMap.getNorthWestType(1, 2));
+        System.out.println(theMap.getSouthWestType(1, 2));
         System.out.println("////////////////////////////");
         System.out.println(theMap.getType(0,0));
         System.out.println(theMap.getNorthType(0,0));
